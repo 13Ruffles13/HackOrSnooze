@@ -5,7 +5,6 @@ const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
 /******************************************************************************
  * Story: a single story in the system
  */
-
 class Story {
   /** Make instance of Story from data object about story:
    *   - {title, author, url, username, storyId, createdAt}
@@ -24,7 +23,7 @@ class Story {
 
   getHostName() {
     //TODO:  UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    return new URL(this.url).host;
   }
 }
 
@@ -76,8 +75,20 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory(/* user, newStory */) {
+  async addStory(user, { title, author, url }) {
     // TODO: UNIMPLEMENTED: complete this function!
+    const token = user.loginToken;
+    const res = await axios({ // POST request
+      method: "POST",
+      url: `${BASE_URL}/stories`,
+      data: { token, story: { title, author, url } },
+    });
+
+    const story = new Story(res.data.story); // Makes a story instance
+    this.stories.unshift(story);
+    user.ownStories.unshift(story);
+
+    return story;
   }
 }
 

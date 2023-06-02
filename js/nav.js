@@ -14,6 +14,20 @@ function navAllStories(evt) {
 
 $body.on("click", "#nav-all", navAllStories);
 
+// Show story submit form
+function navSubmitStory__click(evt) {
+  console.debug("navSubmitStories", evt);
+  hidePageComponents();
+  $allStoriesList.show();
+  $submitForm.show();
+}
+$navSubmitStory.on("click", navSubmitStory__click);
+
+// Show my favorite stories on click
+function navFavoriteStories__click(evt) {
+  console.debug("navFavoriteStories", evt);
+  hidePageComponents();
+}
 /** Show login/signup on click on "login" */
 
 function navLoginClick(evt) {
