@@ -20,7 +20,7 @@ Hack or Snooze is a web application that allows users to create accounts, log in
 
 - Options:
 
-  1. Click on repository link to use application
+  1. Click on repository link to use application: https://13ruffles13.github.io/HackOrSnooze/
   2. App can be installed on desktop by cloning the repository and ran by a live server.
 
 - No NPM installations needed!
