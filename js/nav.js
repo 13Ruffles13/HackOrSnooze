@@ -4,8 +4,12 @@
  * Handling navbar clicks and updating navbar
  */
 
-/** Show main list of all stories when click site name */
-
+/** 
+ * Function: navAllStories
+ * Description: Show the main list of all stories when the site name is clicked.
+ * Parameters:
+ *   - evt: The click event object
+ */
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
@@ -14,32 +18,56 @@ function navAllStories(evt) {
 
 $bodyElement.on("click", "#nav-all", navAllStories);
 
-// Show story submit form
+/** 
+ * Function: navSubmitStory__click
+ * Description: Show the story submit form when the "Submit" button is clicked.
+ * Parameters:
+ *   - evt: The click event object
+ */
 function navSubmitStory__click(evt) {
   console.debug("navSubmitStories", evt);
   hidePageComponents();
   $allStoriesListElement.show();
   $submitFormElement.show();
 }
+
 $navSubmitStoryElement.on("click", navSubmitStory__click);
 
-// Show my favorite stories on click
+/** 
+ * Function: navFavoriteStories__click
+ * Description: Show the user's favorite stories when the "Favorites" button is clicked.
+ * Parameters:
+ *   - evt: The click event object
+ */
 function navFavoriteStories__click(evt) {
   console.debug("navFavoriteStories__click", evt);
   hidePageComponents();
   putFavoriteStoriesOnUI();
 }
+
 $bodyElement.on("click", "#nav-favorites", navFavoriteStories__click);
 
-// Show my stories on click my stories
+/** 
+ * Function: navMyStories__click
+ * Description: Show the user's own stories when the "My Stories" button is clicked.
+ * Parameters:
+ *   - evt: The click event object
+ */
 function navMyStories__click(evt) {
   console.debug("navMyStories", evt);
   hidePageComponents();
   putUserStoriesOnUI();
   $ownStoriesElement.show();
 }
+
 $bodyElement.on("click", "#nav-my-stories", navMyStories__click);
-/** Show login/signup on click on "login" */
+
+/** 
+ * Function: navLoginClick
+ * Description: Show the login/signup forms when the "Login" button is clicked.
+ * Parameters:
+ *   - evt: The click event object
+ */
 function navLoginClick(evt) {
   console.debug("navLoginClick", evt);
   hidePageComponents();
@@ -50,7 +78,12 @@ function navLoginClick(evt) {
 
 $navLoginElement.on("click", navLoginClick);
 
-// Hide all content but profile
+/** 
+ * Function: navProfile__click
+ * Description: Hide all content except the user profile when the user's profile button is clicked.
+ * Parameters:
+ *   - evt: The click event object
+ */
 function navProfile__click(evt) {
   console.debug("navProfile__click", evt);
   hidePageComponents();
@@ -59,8 +92,10 @@ function navProfile__click(evt) {
 
 $navUserProfileElement.on("click", navProfile__click);
 
-/** When a user first logins in, update the navbar to reflect that. */
-
+/** 
+ * Function: updateNavOnLogin
+ * Description: Update the navbar when a user logs in.
+ */
 function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
   $(".main-nav-links").css("display", "flex");
