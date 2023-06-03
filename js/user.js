@@ -23,13 +23,13 @@ async function login(evt) {
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.login(username, password);
 
-  $loginForm.trigger("reset");
+  $loginFormElement.trigger("reset");
 
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
 }
 
-$loginForm.on("submit", login);
+$loginFormElement.on("submit", login);
 
 /** 
  * Handle signup form submission
@@ -50,10 +50,10 @@ async function signup(evt) {
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
 
-  $signupForm.trigger("reset");
+  $signupFormElement.trigger("reset");
 }
 
-$signupForm.on("submit", signup);
+$signupFormElement.on("submit", signup);
 
 /** 
  * Handle click of logout button
@@ -66,7 +66,7 @@ function logout(evt) {
   location.reload();
 }
 
-$navLogOut.on("click", logout);
+$navLogOutElement.on("click", logout);
 
 /******************************************************************************
  * Storing/recalling previously-logged-in-user with localStorage
@@ -116,10 +116,10 @@ function updateUIOnUserLogin() {
 
   // Re-display cached user profile stories
   putStoriesOnPage();
-  $allStoriesList.show();
+  $allStoriesListElement.show();
   updateNavOnLogin();
   generateUserProfile();
-  $storiesContainer.show();
+  $storiesContainerElement.show();
 }
 
 // User profile current user info.
