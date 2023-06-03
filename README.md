@@ -8,11 +8,6 @@ Hack or Snooze is a web application that allows users to create accounts, log in
 
 ![App Screenshot](/appPictures/Capture.PNG)
 
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-
 ## Features
 
 - User Authentication: Users can create accounts and log in to the application.
