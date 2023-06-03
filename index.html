@@ -1,17 +1,4 @@
 <!DOCTYPE html>
-
-<!-- Hack or Snooze
-
-     This is the only HTML page; the applications manipulates this DOM
-     during use.
-
-     Primary authors:
-     - Michael Hueter: initial creation, 2018
-     - Elie Schoppik: refactoring using OO, 2019
-     - Joel Burton: refactored and componentized, 2020
-     - You!
-  -->
-
 <html lang="en">
 
 <head>
@@ -28,13 +15,12 @@
 </head>
 
 <body>
-
   <!-- top navigation bar -->
   <nav>
     <div class="navbar-brand">
       <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
     </div>
-    <!--NAV LINKS HIDDEN-->
+    <!-- Main navigation links -->
     <div class="main-nav-links hidden">
       ||
       <a href="#" class="nav-link" id="nav-submit-story">submit</a>
@@ -42,8 +28,8 @@
       <a href="#" class="nav-link" id="nav-favorites">favorites</a>
       ||
       <a href="#" class="nav-link" id="nav-my-stories">my&nbsp;stories</a>
-
     </div>
+    <!-- User authentication and profile links -->
     <div class="nav-right">
       <a class="nav-link" href="#" id="nav-login">login/signup</a>
       <a class="nav-link" href="#" id="nav-user-profile"></a>
@@ -53,6 +39,7 @@
 
   <!-- area for stories (all stories, user stories, favorites) -->
   <section class="stories-container container">
+    <!-- Form for submitting a story -->
     <form action="" class="hidden" id="submit-form">
       <div>
         <label for="create-author">author</label>
@@ -68,26 +55,23 @@
       </div>
       <button type="submit">submit</button>
       <hr>
-
     </form>
 
-    <!-- loading message (removed by JS after stories loaded) -->
+    <!-- Loading message -->
     <div id="stories-loading-msg">Loading&hellip;</div>
 
     <!-- List of all stories -->
     <ol id="all-stories-list" class="stories-list"></ol>
 
-    <!--List of stories favorites by the user-->
+    <!-- List of favorite stories -->
     <ol id="favorited-stories" class="hidden stories-list"></ol>
 
-    <!--List of stories by the user-->
+    <!-- List of stories created by the user -->
     <ol id="my-stories" class="hidden stories-list"></ol>
-
   </section>
 
   <!-- Login and signup forms -->
   <section class="account-forms-container container">
-
     <!-- Login form -->
     <form action="#" id="login-form" class="account-form hidden" method="post">
       <h4>Login</h4>
@@ -134,16 +118,14 @@
     </div>
   </section>
 
-  <!-- Library JS & our JS -->
+  <!-- JavaScript libraries and custom scripts -->
   <script src="https://unpkg.com/jquery"></script>
   <script src="https://unpkg.com/axios/dist/axios.js"></script>
-
   <script src="js/models.js"></script>
   <script src="js/main.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/user.js"></script>
   <script src="js/stories.js"></script>
-
 </body>
 
 </html>
