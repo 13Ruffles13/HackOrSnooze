@@ -103,12 +103,14 @@ function putStoriesOnPage() {
 async function deleteStory(evt) {
   console.debug("deleteStory");
 
-  // Find the closest <li> element and retrieve the story ID
-  const $closestLi = $(evt.target).closest("li");
-  const storyId = $closestLi.attr("id");
+  if (evt.target.className === ("fas fa-trash-alt" || "trash-can")) {
+    // Find the closest <li> element and retrieve the story ID
+    const $closestLi = $(evt.target).closest("li");
+    const storyId = $closestLi.attr("id");
 
-  // Delete the story from the story list
-  await storyList.deleteStory(currentUser, storyId);
+    // Delete the story from the story list
+    await storyList.deleteStory(currentUser, storyId);
+  }
 
   // Refresh the user's story list on the UI
   await putUserStoriesOnUI();
