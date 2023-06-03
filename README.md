@@ -12,9 +12,6 @@ Hack or Snooze is a web application that allows users to create accounts, log in
 
 - [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -23,3 +20,12 @@ Hack or Snooze is a web application that allows users to create accounts, log in
 - Favorite Articles: Users can mark articles as favorites to easily access them later.
 - View All Articles: Users can browse and view all articles created by different users.
 - User Profile: Users have a profile section displaying their account information.
+
+## Installation
+
+- Options:
+
+  - 1. Click on repository link to use application
+  - 2. App can be installed on desktop by cloning the repository and ran by a live server.
+
+- No NPM installations needed!
