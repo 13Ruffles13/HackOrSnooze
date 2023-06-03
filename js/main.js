@@ -6,10 +6,11 @@ const $loadingMessageElement = $("#stories-loading-msg");
 const $allStoriesListElement = $("#all-stories-list");
 const $favoriteStoriesElement = $("#favorited-stories");
 const $ownStoriesElement = $("#my-stories");
-const $storiesContainerElement = $(".stories-container");
+const $storiesContainerElement = $("#stories-container");
 
 const $storiesLists = $(".stories-list");
 
+const $loginAndSignupElement = $("#login-signup-forms");
 const $loginFormElement = $("#login-form");
 const $signupFormElement = $("#signup-form");
 const $submitFormElement = $("#submit-form");
