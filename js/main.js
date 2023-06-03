@@ -1,64 +1,66 @@
 "use strict";
 
-// So we don't have to keep re-finding things on page, find DOM elements once:
+const $bodyElement = $("body");
 
-const $body = $("body");
+const $loadingMessageElement = $("#stories-loading-msg");
+const $allStoriesListElement = $("#all-stories-list");
+const $favoriteStoriesElement = $("#favorited-stories");
+const $ownStoriesElement = $("#my-stories");
+const $storiesContainerElement = $(".stories-container");
 
-const $storiesLoadingMsg = $("#stories-loading-msg");
-const $allStoriesList = $("#all-stories-list");
-const $favoriteStories = $("#favorited-stories");
-const $ownStories = $("#my-stories");
-const $storiesContainer = $(".stories-container");
-
-// jQuery selector to find all stories lists
 const $storiesLists = $(".stories-list");
 
-const $loginForm = $("#login-form");
-const $signupForm = $("#signup-form");
-const $submitForm = $("#submit-form");
+const $loginFormElement = $("#login-form");
+const $signupFormElement = $("#signup-form");
+const $submitFormElement = $("#submit-form");
 
-const $navSubmitStory = $("#nav-submit-story");
-const $navLogin = $("#nav-login");
-const $navUserProfile = $("#nav-user-profile");
-const $navLogOut = $("#nav-logout");
+const $navSubmitStoryElement = $("#nav-submit-story");
+const $navLoginElement = $("#nav-login");
+const $navUserProfileElement = $("#nav-user-profile");
+const $navLogOutElement = $("#nav-logout");
 
-const $userProfile = $("#user-profile");
+const $userProfileElement = $("#user-profile");
 
-/** To make it easier for individual components to show just themselves, this
- * is a useful function that hides pretty much everything on the page. After
- * calling this, individual components can re-show just what they want.
+/**
+ * Hides all page components to make it easier for individual components to show themselves.
+ * After calling this function, individual components can re-show just what they want.
  */
-
 function hidePageComponents() {
   const components = [
     $storiesLists,
-    $submitForm,
-    $loginForm,
-    $signupForm,
-    $userProfile,
+    $submitFormElement,
+    $loginFormElement,
+    $signupFormElement,
+    $userProfileElement,
   ];
   components.forEach((c) => c.hide());
 }
 
-/** Overall function to kick off the app. */
-
+/**
+ * Overall function to kick off the app.
+ */
 async function start() {
   console.debug("start");
 
-  // "Remember logged-in user" and log in, if credentials in localStorage
+  // Check if there is a remembered user and automatically log in
   await checkForRememberedUser();
+
+  // Fetch and display stories on app start
   await getAndShowStoriesOnStart();
 
-  // if we got a logged-in user
-  if (currentUser) updateUIOnUserLogin();
+  // If a logged-in user exists, update the UI accordingly
+  if (currentUser) {
+    updateUIOnUserLogin();
+  }
 }
 
 // Once the DOM is entirely loaded, begin the app
-
 console.warn(
   "HEY STUDENT: This program sends many debug messages to" +
     " the console. If you don't see the message 'start' below this, you're not" +
     " seeing those helpful debug messages. In your browser console, click on" +
     " menu 'Default Levels' and add Verbose"
 );
+
+// Start the app when the DOM is fully loaded
 $(start);

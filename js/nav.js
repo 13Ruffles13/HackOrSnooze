@@ -12,16 +12,16 @@ function navAllStories(evt) {
   putStoriesOnPage();
 }
 
-$body.on("click", "#nav-all", navAllStories);
+$bodyElement.on("click", "#nav-all", navAllStories);
 
 // Show story submit form
 function navSubmitStory__click(evt) {
   console.debug("navSubmitStories", evt);
   hidePageComponents();
-  $allStoriesList.show();
-  $submitForm.show();
+  $allStoriesListElement.show();
+  $submitFormElement.show();
 }
-$navSubmitStory.on("click", navSubmitStory__click);
+$navSubmitStoryElement.on("click", navSubmitStory__click);
 
 // Show my favorite stories on click
 function navFavoriteStories__click(evt) {
@@ -29,42 +29,42 @@ function navFavoriteStories__click(evt) {
   hidePageComponents();
   putFavoriteStoriesOnUI();
 }
-$body.on("click", "#nav-favorites", navFavoriteStories__click);
+$bodyElement.on("click", "#nav-favorites", navFavoriteStories__click);
 
-// Show my stories on click my stories 
+// Show my stories on click my stories
 function navMyStories__click(evt) {
   console.debug("navMyStories", evt);
   hidePageComponents();
   putUserStoriesOnUI();
-  $ownStories.show();
+  $ownStoriesElement.show();
 }
-$body.on("click", "#nav-my-stories", navMyStories__click);
+$bodyElement.on("click", "#nav-my-stories", navMyStories__click);
 /** Show login/signup on click on "login" */
 function navLoginClick(evt) {
   console.debug("navLoginClick", evt);
   hidePageComponents();
-  $loginForm.show();
-  $signupForm.show();
-  $storiesContainer.hide();
+  $loginFormElement.show();
+  $signupFormElement.show();
+  $storiesContainerElement.hide();
 }
 
-$navLogin.on("click", navLoginClick);
+$navLoginElement.on("click", navLoginClick);
 
 // Hide all content but profile
-function navProfile__click(evt){
+function navProfile__click(evt) {
   console.debug("navProfile__click", evt);
   hidePageComponents();
-  $userProfile.show();
+  $userProfileElement.show();
 }
 
-$navUserProfile.on("click", navProfile__click);
+$navUserProfileElement.on("click", navProfile__click);
 
 /** When a user first logins in, update the navbar to reflect that. */
 
 function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
   $(".main-nav-links").css("display", "flex");
-  $navLogin.hide();
-  $navLogOut.show();
-  $navUserProfile.text(`${currentUser.username}`).show();
+  $navLoginElement.hide();
+  $navLogOutElement.show();
+  $navUserProfileElement.text(`${currentUser.username}`).show();
 }

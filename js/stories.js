@@ -7,7 +7,7 @@ let storyList;
 
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
-  $storiesLoadingMsg.remove();
+  $loadingMessageElement.remove();
 
   putStoriesOnPage();
 }
@@ -68,15 +68,15 @@ function getStarHTML(story, user) {
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
 
-  $allStoriesList.empty();
+  $allStoriesListElement.empty();
 
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
-    $allStoriesList.append($story);
+    $allStoriesListElement.append($story);
   }
 
-  $allStoriesList.show();
+  $allStoriesListElement.show();
 }
 
 /* ----------------- Functions added ---------------- */
@@ -94,7 +94,7 @@ async function deleteStory(evt) {
   await putUserStoriesOnUI();
 }
 
-$ownStories.on("click", deleteStory);
+$ownStoriesElement.on("click", deleteStory);
 
 // Submit a new story -- Handler will be called
 async function submitNewStory(evt) {
@@ -111,45 +111,45 @@ async function submitNewStory(evt) {
   const story = await storyList.addStory(currentUser, storyData);
 
   const $story = generateStoryMarkup(story);
-  $allStoriesList.prepend($story);
+  $allStoriesListElement.prepend($story);
 
   //Hide the form and reset functionality
-  $submitForm.slideUp("slow");
-  $submitForm.trigger("reset");
+  $submitFormElement.slideUp("slow");
+  $submitFormElement.trigger("reset");
 }
-$submitForm.on("submit", submitNewStory);
+$submitFormElement.on("submit", submitNewStory);
 
 // Current user own stories
 function putUserStoriesOnUI() {
   console.debug("putUserStoriesOnUI");
-  $ownStories.empty();
+  $ownStoriesElement.empty();
 
   if (currentUser.ownStories.length === 0) {
-    $ownStories.append("<h5>No stories added by user!</h5>");
+    $ownStoriesElement.append("<h5>No stories added by user!</h5>");
   } else {
     for (let story of currentUser.ownStories) {
       let $story = generateStoryMarkup(story, true);
-      $ownStories.append($story);
+      $ownStoriesElement.append($story);
     }
   }
 
-  $ownStories.show();
+  $ownStoriesElement.show();
 }
 
 // Put favorite stories on UI
 function putFavoriteStoriesOnUI() {
   console.debug("putFavoriteStoriesOnUI");
-  $favoriteStories.empty();
+  $favoriteStoriesElement.empty();
 
   if (currentUser.favorites.length === 0) {
-    $favoriteStories.append("<h5>No favorite stories added!</h5>");
+    $favoriteStoriesElement.append("<h5>No favorite stories added!</h5>");
   } else {
     for (let story of currentUser.favorites) {
       const $story = generateStoryMarkup(story);
-      $favoriteStories.append($story);
+      $favoriteStoriesElement.append($story);
     }
   }
-  $favoriteStories.show();
+  $favoriteStoriesElement.show();
 }
 
 // Toggle fav/un-fav a story
