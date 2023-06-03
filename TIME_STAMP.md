@@ -6,4 +6,4 @@
 | 1:30 PM  | - Completed part 2B: Built the User Interface for New Story Form/Add New Story. |              |
 |          | - Completed part 3: Favorite stories.                                           |              |
 |          | - Completed part 4: Removing stories.                                           |              |
-|          | - Completed part 5: Styling                                                     |              |
+|          | - Completed part 5: Styling                                                     | 8:30 PM      |
