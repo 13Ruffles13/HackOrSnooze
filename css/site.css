@@ -3,20 +3,23 @@
 body {
   font-family: Arimo, sans-serif;
   margin: 8px 7.5vw;
+  height: 100vh;
+  background: radial-gradient(#FAEDCA, #F2C078);
+  color: #333333;
 }
 
 h1 {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   margin: 0;
 }
 
 h4 {
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin: 0;
 }
 
 h5 {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: lighter;
 }
 
@@ -31,12 +34,18 @@ a:hover {
 
 /* Site layout */
 
-/* This is the basic box that the main part of the page goes into */
 .container {
   display: flex;
   flex-direction: column;
   align-self: center;
-  background-color: #f6f6ef;
+  background-color: #f6efef;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.stories-container {
+  height: calc(100vh - 100px);
+  overflow: scroll;
 }
 
 .hidden {
@@ -56,7 +65,7 @@ form > * {
 }
 
 form label {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   display: inline-block;
   width: 3.5rem;
@@ -65,7 +74,7 @@ form label {
 }
 
 form input {
-  font-size: 0.8rem;
+  font-size: 1rem;
   border: none;
   border-radius: 2px;
   padding: 8px;
@@ -79,12 +88,12 @@ form input:focus {
 }
 
 form > button {
-  width: 4rem;
+  width: 6rem;
   margin: 5px 0 15px 65px;
   border: none;
   border-radius: 4px;
   padding: 8px;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   background-color: lightslategray;
   color: white;
   cursor: pointer;
@@ -104,11 +113,12 @@ form > hr {
   width: 70px;
 }
 
-/* responsive queries for tightening things up for mobile. */
+/* Responsive queries for tightening things up for mobile */
 
 @media screen and (max-width: 576px) {
   body {
     margin: 0;
+    padding: 20px;
   }
 }
 

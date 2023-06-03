@@ -1,14 +1,29 @@
 /* Login and signup forms */
 
 .account-form button {
-  width: 4rem;
+  width: 6rem;
   margin-left: 80px;
+  padding: 8px;
+  font-size: 0.9rem;
+  background-color: lightslategray;
+  color: white;
+  cursor: pointer;
+  transition: all 0.15s;
 }
 
 #signup-form button {
-  width: 8rem;
+  width: 10rem;
 }
 
 .account-forms-container {
   padding-left: 20px;
+}
+
+.user-profile-box {
+  padding: 10px 20px 20px;
+  font-size: 1rem;
+}
+
+.user-profile-box > * {
+  margin: 10px 0;
 }

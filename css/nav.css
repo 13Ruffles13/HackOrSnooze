@@ -1,23 +1,41 @@
 /* Navigation bar */
-
 nav {
   display: flex;
-  background-color: #ff6600;
+  background-color: #C1DBB3;
   align-items: center;
-  padding: 5px 20px;
+  padding: 1rem 2rem;
   border-radius: 3px 3px 0 0;
 }
 
 .navbar-brand {
   font-weight: bold;
+  font-size: 1.2rem;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.main-nav-links {
+  margin: 0 10px;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-link {
   font-size: 0.85rem;
-  margin: 0 3px;
+  margin: 0 8px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #e0e0e0;
 }
 
 .nav-right {
   margin-left: auto;
   text-align: right;
 }
+

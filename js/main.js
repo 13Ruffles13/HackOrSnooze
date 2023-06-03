@@ -6,9 +6,9 @@ const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
-const $favortieStories = $("#favorited-stories");
+const $favoriteStories = $("#favorited-stories");
 const $ownStories = $("#my-stories");
-const $storiesContainer = $("#stories-container");
+const $storiesContainer = $(".stories-container");
 
 // jQuery selector to find all stories lists
 const $storiesLists = $(".stories-list");
@@ -30,7 +30,13 @@ const $userProfile = $("#user-profile");
  */
 
 function hidePageComponents() {
-  const components = [$storiesLists, $submitForm, $loginForm, $signupForm];
+  const components = [
+    $storiesLists,
+    $submitForm,
+    $loginForm,
+    $signupForm,
+    $userProfile,
+  ];
   components.forEach((c) => c.hide());
 }
 

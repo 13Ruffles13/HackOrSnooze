@@ -110,7 +110,20 @@ function saveUserCredentialsInLocalStorage() {
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
 
-  $allStoriesList.show();
+  hidePageComponents();
 
+  // TODO: Re-display cached user profile stories
+  putStoriesOnPage();
+  $allStoriesList.show();
   updateNavOnLogin();
+  generateUserProfile();
+  $storiesContainer.show();
+}
+
+// TODO: User profile current user info.
+function generateUserProfile() {
+  console.debug("generateUserProfile");
+  $("#profile-name").text(currentUser.name);
+  $("#profile-username").text(currentUser.username);
+  $("#profile-account-date").text(currentUser.createdAt.slice(0, 10));
 }

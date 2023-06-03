@@ -22,7 +22,6 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    //TODO:  UNIMPLEMENTED: complete this function!
     return new URL(this.url).host;
   }
 }
@@ -78,7 +77,8 @@ class StoryList {
   async addStory(user, { title, author, url }) {
     // TODO: UNIMPLEMENTED: complete this function!
     const token = user.loginToken;
-    const res = await axios({ // POST request
+    const res = await axios({
+      // POST request
       method: "POST",
       url: `${BASE_URL}/stories`,
       data: { token, story: { title, author, url } },
@@ -89,6 +89,21 @@ class StoryList {
     user.ownStories.unshift(story);
 
     return story;
+  }
+
+  // Delete story from API and remove it from the story list array.
+  async deleteStory(user, storyId) {
+    const token = user.loginToken;
+    await axios({
+      url: `${BASE_URL}/stories/${storyId}`,
+      method: "DELETE",
+      data: { token: user.loginToken }
+    });
+
+    this.stories = this.stories.filter((story) => story.storyId !== storyId);
+
+    user.ownStories = user.ownStories.filter((s) => s.storyId !== storyId);
+    user.favorites = user.favorites.filter((s) => s.storyId !== storyId);
   }
 }
 
@@ -201,5 +216,32 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+
+  async addFavorite(story) {
+    this.favorites.push(story);
+    await this.addOrRemoveFavorite("add", story);
+  }
+
+  //Remove a stroy to the list of user favorites
+  async removeFavorite(story) {
+    this.favorites = this.favorites.filter((s) => s.storyId !== story.storyId);
+    await this.addOrRemoveFavorite("remove", story);
+  }
+
+  //UPDATE API
+  async addOrRemoveFavorite(newState, story) {
+    const method = newState === "add" ? "POST" : "DELETE";
+    const token = this.loginToken;
+    await axios({
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+      method: method,
+      data: { token },
+    });
+  }
+
+  // Check if the story instance is a favorite or not
+  isFavorite(story) {
+    return this.favorites.some((s) => s.storyId === story.storyId);
   }
 }
