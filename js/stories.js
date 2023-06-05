@@ -4,7 +4,7 @@
 let storyList;
 
 /**
- * Get and show stories when the site first loads.
+ * Gets and shows stories when the site first loads.
  */
 async function loadAndDisplayStories() {
   try {
@@ -21,10 +21,10 @@ async function loadAndDisplayStories() {
 
 /**
  * Generates HTML markup for an individual Story instance.
- * - story: An instance of Story.
- * - showDeleteBtn: A boolean indicating whether to show the delete button (default: false).
  *
- * Returns the HTML markup for the story.
+ * @param {Story} story - An instance of Story.
+ * @param {boolean} [showDeleteBtn=false] - A boolean indicating whether to show the delete button.
+ * @returns {jQuery} The HTML markup for the story.
  */
 function generateStoryMarkup(story, showDeleteBtn = false) {
   const hostName = story.getHostName();
@@ -49,7 +49,7 @@ function generateStoryMarkup(story, showDeleteBtn = false) {
 /**
  * Generates the HTML for a delete button for a story.
  *
- * Returns the HTML markup for the delete button.
+ * @returns {string} The HTML markup for the delete button.
  */
 function getDeleteBtnHTML() {
   return `
@@ -61,10 +61,10 @@ function getDeleteBtnHTML() {
 
 /**
  * Generates the HTML for a favorite/not-favorite star for a story.
- * - story: An instance of Story.
- * - user: The current user.
  *
- * Returns the HTML markup for the star.
+ * @param {Story} story - An instance of Story.
+ * @param {User} user - The current user.
+ * @returns {string} The HTML markup for the star.
  */
 function getStarHTML(story, user) {
   const isFav = user.isFavorite(story);
@@ -100,7 +100,8 @@ function displayStories() {
 
 /**
  * Deletes a story.
- * - evt: The event object.
+ *
+ * @param {Event} evt - The event object.
  */
 async function deleteStory(evt) {
   console.debug("deleteStory");
@@ -127,7 +128,11 @@ async function deleteStory(evt) {
 
 $ownStoriesElement.on("click", deleteStory);
 
-// Submit a new story - Handler will be called
+/**
+ * Submits a new story.
+ *
+ * @param {Event} evt - The event object.
+ */
 async function submitNewStory(evt) {
   console.debug("submitNewStory");
   evt.preventDefault();
@@ -152,6 +157,11 @@ async function submitNewStory(evt) {
   }
 }
 
+/**
+ * Gets the form data for submitting a new story.
+ *
+ * @returns {object} The form data containing title, url, author, and username.
+ */
 function getFormData() {
   const title = $("#create-title").val();
   const url = $("#create-url").val();
@@ -182,7 +192,9 @@ function displayUserStories() {
   $ownStoriesElement.show();
 }
 
-// Put favorite stories on UI
+/**
+ * Displays the favorite stories of the current user on the UI.
+ */
 function displayFavoriteStories() {
   console.debug("putFavoriteStoriesOnUI");
   $favoriteStoriesElement.empty();
@@ -199,7 +211,9 @@ function displayFavoriteStories() {
   $favoriteStoriesElement.show();
 }
 
-// Toggle favorite/unfavorite a story
+/**
+ * Toggles favorite/unfavorite a story.
+ */
 $storiesLists.on("click", ".star", async function (evt) {
   console.debug("toggleFavoriteStories");
   const $tgt = $(evt.target);
