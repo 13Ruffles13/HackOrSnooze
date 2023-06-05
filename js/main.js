@@ -47,7 +47,7 @@ async function start() {
   await checkForRememberedUser();
 
   // Fetch and display stories on app start
-  await getAndShowStoriesOnStart();
+  await loadAndDisplayStories();
 
   // If a logged-in user exists, update the UI accordingly
   if (currentUser) {

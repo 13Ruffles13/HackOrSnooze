@@ -6,15 +6,17 @@ let storyList;
 /**
  * Get and show stories when the site first loads.
  */
-async function getAndShowStoriesOnStart() {
-  // Retrieve the list of stories
-  storyList = await StoryList.getStories();
-
-  // Remove the loading message from the page
-  $loadingMessageElement.remove();
-
-  // Display the stories on the page
-  putStoriesOnPage();
+async function loadAndDisplayStories() {
+  try {
+    storyList = await StoryList.getStories();
+    $loadingMessageElement.remove();
+    displayStories();
+  } catch (error) {
+    console.error(
+      "An error occurred while loading and displaying stories:",
+      error
+    );
+  }
 }
 
 /**
@@ -78,7 +80,7 @@ function getStarHTML(story, user) {
 /**
  * Retrieves a list of stories from the server, generates their HTML markup, and puts them on the page.
  */
-function putStoriesOnPage() {
+function displayStories() {
   console.debug("putStoriesOnPage");
 
   // Empty the stories list element
@@ -103,17 +105,24 @@ function putStoriesOnPage() {
 async function deleteStory(evt) {
   console.debug("deleteStory");
 
-  if (evt.target.className === ("fas fa-trash-alt" || "trash-can")) {
-    // Find the closest <li> element and retrieve the story ID
-    const $closestLi = $(evt.target).closest("li");
-    const storyId = $closestLi.attr("id");
+  const classNames = evt.target.className;
 
-    // Delete the story from the story list
-    await storyList.deleteStory(currentUser, storyId);
+  if (
+    !classNames.includes("fas fa-trash-alt") &&
+    !classNames.includes("trash-can")
+  ) {
+    return; // No need to proceed if the event target does not have the desired class names
   }
 
+  // Find the closest <li> element and retrieve the story ID
+  const $closestLi = $(evt.target).closest("li");
+  const storyId = $closestLi.attr("id");
+
+  // Delete the story from the story list
+  await storyList.deleteStory(currentUser, storyId);
+
   // Refresh the user's story list on the UI
-  await putUserStoriesOnUI();
+  await displayUserStories();
 }
 
 $ownStoriesElement.on("click", deleteStory);
@@ -124,22 +133,32 @@ async function submitNewStory(evt) {
   evt.preventDefault();
 
   // Get data from the form
+  const storyData = getFormData();
+
+  try {
+    // Add the story to the story list
+    const story = await storyList.addStory(currentUser, storyData);
+
+    // Generate HTML markup for the new story and prepend it to the stories list
+    const $story = generateStoryMarkup(story);
+    $allStoriesListElement.prepend($story);
+
+    // Hide the form and reset its functionality
+    $submitFormElement.slideUp("slow");
+    $submitFormElement.trigger("reset");
+  } catch (error) {
+    console.error("Error submitting new story:", error);
+    // Handle the error - display an error message, etc.
+  }
+}
+
+function getFormData() {
   const title = $("#create-title").val();
   const url = $("#create-url").val();
   const author = $("#create-author").val();
   const username = currentUser.username;
-  const storyData = { title, url, author, username };
 
-  // Add the story to the story list
-  const story = await storyList.addStory(currentUser, storyData);
-
-  // Generate HTML markup for the new story and prepend it to the stories list
-  const $story = generateStoryMarkup(story);
-  $allStoriesListElement.prepend($story);
-
-  // Hide the form and reset its functionality
-  $submitFormElement.slideUp("slow");
-  $submitFormElement.trigger("reset");
+  return { title, url, author, username };
 }
 
 $submitFormElement.on("submit", submitNewStory);
@@ -147,55 +166,56 @@ $submitFormElement.on("submit", submitNewStory);
 /**
  * Displays the current user's own stories on the UI.
  */
-function putUserStoriesOnUI() {
+function displayUserStories() {
   console.debug("putUserStoriesOnUI");
   $ownStoriesElement.empty();
 
   if (currentUser.ownStories.length === 0) {
     $ownStoriesElement.append("<h5>No stories added by user!</h5>");
   } else {
-    for (let story of currentUser.ownStories) {
-      let $story = generateStoryMarkup(story, true);
-      $ownStoriesElement.append($story);
-    }
+    const $storyMarkup = currentUser.ownStories.map((story) =>
+      generateStoryMarkup(story, true)
+    );
+    $ownStoriesElement.append($storyMarkup);
   }
 
   $ownStoriesElement.show();
 }
 
 // Put favorite stories on UI
-function putFavoriteStoriesOnUI() {
+function displayFavoriteStories() {
   console.debug("putFavoriteStoriesOnUI");
   $favoriteStoriesElement.empty();
 
   if (currentUser.favorites.length === 0) {
     $favoriteStoriesElement.append("<h5>No favorite stories added!</h5>");
   } else {
-    for (let story of currentUser.favorites) {
-      const $story = generateStoryMarkup(story);
-      $favoriteStoriesElement.append($story);
-    }
+    const $storyMarkup = currentUser.favorites.map((story) =>
+      generateStoryMarkup(story)
+    );
+    $favoriteStoriesElement.append($storyMarkup);
   }
+
   $favoriteStoriesElement.show();
 }
 
 // Toggle favorite/unfavorite a story
-async function toggleFavoriteStories(evt) {
+$storiesLists.on("click", ".star", async function (evt) {
   console.debug("toggleFavoriteStories");
   const $tgt = $(evt.target);
   const $closestLi = $tgt.closest("li");
   const storyId = $closestLi.attr("id");
   const story = storyList.stories.find((s) => s.storyId === storyId);
 
-  if ($tgt.hasClass("fas")) {
+  let isFavorite = currentUser.isFavorite(story);
+
+  if (isFavorite) {
     // Remove story from favorites
     await currentUser.removeFavorite(story);
-    $tgt.closest("i").toggleClass("fas far");
   } else {
     // Add story to favorites
     await currentUser.addFavorite(story);
-    $tgt.closest("i").toggleClass("fas far");
   }
-}
 
-$storiesLists.on("click", ".star", toggleFavoriteStories);
+  $tgt.closest("i").toggleClass("fas far");
+});

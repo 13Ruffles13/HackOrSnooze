@@ -7,7 +7,7 @@ let currentUser;
  * User login/signup/login
  */
 
-/** 
+/**
  * Handle login form submission. If login ok, sets up the user instance
  * @param {Event} evt - The click event object
  */
@@ -31,7 +31,7 @@ async function login(evt) {
 
 $loginFormElement.on("submit", login);
 
-/** 
+/**
  * Handle signup form submission
  * @param {Event} evt - The click event object
  */
@@ -55,7 +55,7 @@ async function signup(evt) {
 
 $signupFormElement.on("submit", signup);
 
-/** 
+/**
  * Handle click of logout button
  * @param {Event} evt - The click event object
  * Remove their credentials from localStorage and refresh page
@@ -72,7 +72,7 @@ $navLogOutElement.on("click", logout);
  * Storing/recalling previously-logged-in-user with localStorage
  */
 
-/** 
+/**
  * If there are user credentials in local storage, use those to log in
  * that user. This is meant to be called on page load, just once.
  */
@@ -86,7 +86,7 @@ async function checkForRememberedUser() {
   currentUser = await User.loginViaStoredCredentials(token, username);
 }
 
-/** 
+/**
  * Sync current user information to localStorage.
  * We store the username/token in localStorage so when the page is refreshed
  * (or the user revisits the site later), they will still be logged in.
@@ -103,7 +103,7 @@ function saveUserCredentialsInLocalStorage() {
  * General UI stuff about users
  */
 
-/** 
+/**
  * When a user signs up or registers, we want to set up the UI for them:
  * - show the stories list
  * - update nav bar options for logged-in user
@@ -115,7 +115,7 @@ function updateUIOnUserLogin() {
   hidePageComponents();
 
   // Re-display cached user profile stories
-  putStoriesOnPage();
+  displayStories();
   $allStoriesListElement.show();
   updateNavOnLogin();
   generateUserProfile();
@@ -123,7 +123,7 @@ function updateUIOnUserLogin() {
 }
 
 // User profile current user info.
-/** 
+/**
  * Generate the user profile part of the page with the current user's information.
  */
 function generateUserProfile() {
