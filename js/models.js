@@ -5,10 +5,11 @@ const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
 /******************************************************************************
  * Story: a single story in the system
  */
+
 class Story {
   /**
    * Make an instance of Story from a data object about the story:
-   *   - {storyId, title, author, url, username, createdAt}
+   * @param {Object} data - The data object containing story information {storyId, title, author, url, username, createdAt}.
    */
   constructor({ storyId, title, author, url, username, createdAt }) {
     this.storyId = storyId;
@@ -21,6 +22,7 @@ class Story {
 
   /**
    * Parses the hostname out of the URL and returns it.
+   * @returns {string} - The hostname extracted from the URL.
    */
   getHostName() {
     try {
@@ -40,6 +42,7 @@ class Story {
 /******************************************************************************
  * List of Story instances: used by UI to show story lists in DOM.
  */
+
 class StoryList {
   /**
    * Constructor for StoryList class.
@@ -150,6 +153,11 @@ class User {
     this.loginToken = token;
   }
 
+  /**
+   * Maps user data from API response to User instance properties.
+   * @param {Object} data - The user data returned from the API response.
+   * @returns {Object} - The mapped user data {username, name, createdAt, favorites[], ownStories[]}.
+   */
   static mapUserData(data) {
     const { user } = data;
 
