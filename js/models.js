@@ -56,22 +56,22 @@ class StoryList {
   static async getStories() {
     try {
       const response = await axios.get(`${BASE_URL}/stories`);
-  
+
       if (response.status !== 200) {
         throw new Error(`Failed to fetch stories. Status: ${response.status}`);
       }
-  
+
       const storiesData = response.data.stories;
-  
+
       const stories = storiesData.map((story) => new Story(story));
-  
+
       return new StoryList(stories);
     } catch (error) {
-      console.error('Error retrieving stories:', error.message);
+      console.error("Error retrieving stories:", error.message);
       return null; // Return null or handle the error appropriately.
     }
   }
-  
+
   /**
    * Adds a new story to the API, creates a Story instance, and adds it to the story list.
    * @param {User} user - The current user posting the story.
@@ -79,18 +79,28 @@ class StoryList {
    * @returns {Story} - The new Story instance.
    */
   async addStory(user, { title, author, url }) {
-    const token = user.loginToken;
-    const res = await axios({
-      method: "POST",
-      url: `${BASE_URL}/stories`,
-      data: { token, story: { title, author, url } },
-    });
+    try {
+      const { loginToken } = user;
 
-    const story = new Story(res.data.story);
-    this.stories.unshift(story);
-    user.ownStories.unshift(story);
+      const response = await axios.post(`${BASE_URL}/stories`, {
+        token: loginToken,
+        story: { title, author, url },
+      });
 
-    return story;
+      if (response.status !== 201) {
+        throw new Error(`Failed to add story. Status: ${response.status}`);
+      }
+
+      const newStory = new Story(response.data.story);
+
+      this.stories.unshift(newStory);
+      user.ownStories.unshift(newStory);
+
+      return newStory;
+    } catch (error) {
+      console.error("Error adding story:", error.message);
+      return null; // Return null or handle the error appropriately.
+    }
   }
 
   /**
@@ -99,17 +109,22 @@ class StoryList {
    * @param {string} storyId - The ID of the story to be deleted.
    */
   async deleteStory(user, storyId) {
-    const token = user.loginToken;
-    await axios({
-      url: `${BASE_URL}/stories/${storyId}`,
-      method: "DELETE",
-      data: { token: user.loginToken },
-    });
+    try {
+      const { loginToken } = user;
 
-    this.stories = this.stories.filter((story) => story.storyId !== storyId);
+      await axios.delete(`${BASE_URL}/stories/${storyId}`, {
+        data: { token: loginToken },
+      });
 
-    user.ownStories = user.ownStories.filter((s) => s.storyId !== storyId);
-    user.favorites = user.favorites.filter((s) => s.storyId !== storyId);
+      this.stories = this.stories.filter((story) => story.storyId !== storyId);
+
+      user.ownStories = user.ownStories.filter((s) => s.storyId !== storyId);
+      user.favorites = user.favorites.filter((s) => s.storyId !== storyId);
+    } catch (error) {
+      console.error("Error deleting story:", error.message);
+      // Handle the error appropriately or re-throw it to be handled elsewhere.
+      throw error;
+    }
   }
 }
 
@@ -135,6 +150,18 @@ class User {
     this.loginToken = token;
   }
 
+  static mapUserData(data) {
+    const { user } = data;
+
+    return {
+      username: user.username,
+      name: user.name,
+      createdAt: user.createdAt,
+      favorites: user.favorites,
+      ownStories: user.stories,
+    };
+  }
+
   /**
    * Registers a new user in the API, creates a User instance, and returns it.
    * @param {string} username - The new username.
@@ -143,24 +170,21 @@ class User {
    * @returns {User} - The new User instance.
    */
   static async signup(username, password, name) {
-    const response = await axios({
-      url: `${BASE_URL}/signup`,
-      method: "POST",
-      data: { user: { username, password, name } },
-    });
+    try {
+      const response = await axios.post(`${BASE_URL}/signup`, {
+        user: { username, password, name },
+      });
 
-    let { user } = response.data;
+      const user = User.mapUserData(response.data);
 
-    return new User(
-      {
-        username: user.username,
-        name: user.name,
-        createdAt: user.createdAt,
-        favorites: user.favorites,
-        ownStories: user.stories,
-      },
-      response.data.token
-    );
+      return new User(user, response.data.token);
+    } catch (error) {
+      console.error(
+        "Error signing up: Account already exists. Please choose a different username. ",
+        error.message
+      );
+      throw error;
+    }
   }
 
   /**
@@ -170,24 +194,21 @@ class User {
    * @returns {User} - The User instance.
    */
   static async login(username, password) {
-    const response = await axios({
-      url: `${BASE_URL}/login`,
-      method: "POST",
-      data: { user: { username, password } },
-    });
+    try {
+      const response = await axios.post(`${BASE_URL}/login`, {
+        user: { username, password },
+      });
 
-    let { user } = response.data;
+      const user = User.mapUserData(response.data);
 
-    return new User(
-      {
-        username: user.username,
-        name: user.name,
-        createdAt: user.createdAt,
-        favorites: user.favorites,
-        ownStories: user.stories,
-      },
-      response.data.token
-    );
+      return new User(user, response.data.token);
+    } catch (error) {
+      console.error(
+        "Error logging in: Invalid username or password. ",
+        error.message
+      );
+      throw error;
+    }
   }
 
   /**
@@ -227,8 +248,14 @@ class User {
    * @param {Story} story - The story to be added to favorites.
    */
   async addFavorite(story) {
-    this.favorites.push(story);
-    await this.addOrRemoveFavorite("add", story);
+    try {
+      this.favorites.push(story);
+      await this.updateFavorite("add", story);
+    } catch (error) {
+      console.error("Error adding favorite:", error.message);
+      // Handle the error appropriately or re-throw it to be handled elsewhere.
+      throw error;
+    }
   }
 
   /**
@@ -236,8 +263,16 @@ class User {
    * @param {Story} story - The story to be removed from favorites.
    */
   async removeFavorite(story) {
-    this.favorites = this.favorites.filter((s) => s.storyId !== story.storyId);
-    await this.addOrRemoveFavorite("remove", story);
+    try {
+      this.favorites = this.favorites.filter(
+        (s) => s.storyId !== story.storyId
+      );
+      await this.updateFavorite("remove", story);
+    } catch (error) {
+      console.error("Error removing favorite:", error.message);
+      // Handle the error appropriately or re-throw it to be handled elsewhere.
+      throw error;
+    }
   }
 
   /**
@@ -245,14 +280,21 @@ class User {
    * @param {string} newState - The new state ('add' or 'remove').
    * @param {Story} story - The story to be added or removed.
    */
-  async addOrRemoveFavorite(newState, story) {
-    const method = newState === "add" ? "POST" : "DELETE";
-    const token = this.loginToken;
-    await axios({
-      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
-      method: method,
-      data: { token },
-    });
+  async updateFavorite(newState, story) {
+    try {
+      const method = newState === "add" ? "POST" : "DELETE";
+      const token = this.loginToken;
+
+      await axios({
+        url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+        method: method,
+        data: { token },
+      });
+    } catch (error) {
+      console.error("Error updating favorite:", error.message);
+      // Handle the error appropriately or re-throw it to be handled elsewhere.
+      throw error;
+    }
   }
 
   /**
@@ -261,6 +303,7 @@ class User {
    * @returns {boolean} - True if the story is a favorite, false otherwise.
    */
   isFavorite(story) {
-    return this.favorites.some((s) => s.storyId === story.storyId);
+    const { storyId } = story;
+    return this.favorites.some((s) => s.storyId === storyId);
   }
 }
