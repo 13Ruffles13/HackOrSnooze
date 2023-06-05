@@ -23,7 +23,17 @@ class Story {
    * Parses the hostname out of the URL and returns it.
    */
   getHostName() {
-    return new URL(this.url).host;
+    try {
+      if (!this.url) {
+        throw new Error("Invalid URL: URL is missing.");
+      }
+
+      const url = new URL(this.url);
+      return url.host;
+    } catch (error) {
+      console.error("Error parsing URL:", error.message);
+      return ""; // Return a default value or handle the error appropriately.
+    }
   }
 }
 
@@ -44,16 +54,24 @@ class StoryList {
    * @returns {StoryList} - The new StoryList instance.
    */
   static async getStories() {
-    const response = await axios({
-      url: `${BASE_URL}/stories`,
-      method: "GET",
-    });
-
-    const stories = response.data.stories.map((story) => new Story(story));
-
-    return new StoryList(stories);
+    try {
+      const response = await axios.get(`${BASE_URL}/stories`);
+  
+      if (response.status !== 200) {
+        throw new Error(`Failed to fetch stories. Status: ${response.status}`);
+      }
+  
+      const storiesData = response.data.stories;
+  
+      const stories = storiesData.map((story) => new Story(story));
+  
+      return new StoryList(stories);
+    } catch (error) {
+      console.error('Error retrieving stories:', error.message);
+      return null; // Return null or handle the error appropriately.
+    }
   }
-
+  
   /**
    * Adds a new story to the API, creates a Story instance, and adds it to the story list.
    * @param {User} user - The current user posting the story.
