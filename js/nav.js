@@ -7,8 +7,7 @@
 /**
  * Function: navAllStories
  * Description: Show the main list of all stories when the site name is clicked.
- * Parameters:
- *   - evt: The click event object
+ * @param {Event} evt - The click event object
  */
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
@@ -28,8 +27,7 @@ $bodyElement.on("click", "#nav-all", navAllStories);
 /**
  * Function: handleNavSubmitStoryClick
  * Description: Show the story submit form when the "Submit" button is clicked.
- * Parameters:
- *   - evt: The click event object
+ * @param {Event} evt - The click event object
  */
 function handleNavSubmitStoryClick(evt) {
   console.debug("handleNavSubmitStoryClick", evt);
@@ -50,8 +48,7 @@ $navSubmitStoryElement.on("click", handleNavSubmitStoryClick);
 /**
  * Function: handleNavFavoriteStoriesClick
  * Description: Show the user's favorite stories when the "Favorites" button is clicked.
- * Parameters:
- *   - evt: The click event object
+ * @param {Event} evt - The click event object
  */
 function handleNavFavoriteStoriesClick(evt) {
   console.debug("handleNavFavoriteStoriesClick", evt);
@@ -71,8 +68,7 @@ $bodyElement.on("click", "#nav-favorites", handleNavFavoriteStoriesClick);
 /**
  * Function: handleNavMyStoriesClick
  * Description: Show the user's own stories when the "My Stories" button is clicked.
- * Parameters:
- *   - evt: The click event object
+ * @param {Event} evt - The click event object
  */
 function handleNavMyStoriesClick(evt) {
   console.debug("handleNavMyStoriesClick", evt);
@@ -93,8 +89,7 @@ $bodyElement.on("click", "#nav-my-stories", handleNavMyStoriesClick);
 /**
  * Function: handleNavLoginClick
  * Description: Show the login/signup forms when the "Login" button is clicked.
- * Parameters:
- *   - evt: The click event object
+ * @param {Event} evt - The click event object
  */
 function handleNavLoginClick(evt) {
   console.debug("handleNavLoginClick", evt);
@@ -115,8 +110,7 @@ $navLoginElement.on("click", handleNavLoginClick);
 /**
  * Function: handleNavProfileClick
  * Description: Hide all content except the user profile when the user's profile button is clicked.
- * Parameters:
- *   - evt: The click event object
+ * @param {Event} evt - The click event object
  */
 function handleNavProfileClick(evt) {
   console.debug("handleNavProfileClick", evt);
@@ -151,3 +145,4 @@ function updateNavOnLogin() {
   // Set the username in the user profile element and show it
   $navUserProfileElement.text(currentUser.username).show();
 }
+
