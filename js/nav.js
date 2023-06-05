@@ -145,4 +145,3 @@ function updateNavOnLogin() {
   // Set the username in the user profile element and show it
   $navUserProfileElement.text(currentUser.username).show();
 }
-
