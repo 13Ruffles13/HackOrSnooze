@@ -67,12 +67,9 @@ function getDeleteBtnHTML() {
  * @returns {string} The HTML markup for the star.
  */
 function getStarHTML(story, user) {
-  const isFav = user.isFavorite(story);
-  const starType = isFav ? "fas" : "far";
-
   return `
     <span class="star">
-      <i class="${starType} fa-star"></i>
+      <i class="${user.isFavorite(story) ? "fas" : "far"} fa-star"></i>
     </span>
   `;
 }
